@@ -1,0 +1,26 @@
+{
+  "name": "stl-file-render",
+  "version": "1.0.0",
+  "description": "Learning project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Vinayak Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "crypto": "^1.0.1",
+    "ejs": "^3.1.7",
+    "express": "^4.18.0",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.2",
+    "multer": "^1.4.4",
+    "node-stl": "^0.7.2",
+    "nodemon": "^2.0.15",
+    "stl-reader": "^3.0.1",
+    "stljs": "^0.1.5"
+  }
+}
