@@ -2,8 +2,9 @@ const mongodb = require("mongodb");
 const getDb = require("../util/database").getDb;
 
 class Stl {
-  constructor(dataType, fileContent, hashData, encryptedData, id) {
+  constructor(dataType, /*uploadedFile,*/ fileContent, hashData, encryptedData, id) {
     (this.dataType = dataType),
+    // (this.uploadedFile = uploadedFile),
       (this.fileContent = fileContent),
       (this.hashData = hashData),
       (this.encryptedData = encryptedData),
