@@ -1,13 +1,13 @@
 const mongodb = require("mongodb");
 
+const dbKey = require("./dbKey");
+
 const MongoClient = mongodb.MongoClient;
 
 let _db;
 
 const mongoConnect = (callback) => {
-  MongoClient.connect(
-    "mongodb+srv://Vinayak:Vinayak@cluster0.kci2y.mongodb.net/shop?retryWrites=true&w=majority"
-  )
+  MongoClient.connect(dbKey)
     .then((client) => {
       console.log("Connected!");
       _db = client.db();

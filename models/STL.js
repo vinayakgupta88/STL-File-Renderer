@@ -2,9 +2,15 @@ const mongodb = require("mongodb");
 const getDb = require("../util/database").getDb;
 
 class Stl {
-  constructor(dataType, /*uploadedFile,*/ fileContent, hashData, encryptedData, id) {
+  constructor(
+    dataType,
+    /*uploadedFile,*/ fileContent,
+    hashData,
+    encryptedData,
+    id
+  ) {
     (this.dataType = dataType),
-    // (this.uploadedFile = uploadedFile),
+      // (this.uploadedFile = uploadedFile),
       (this.fileContent = fileContent),
       (this.hashData = hashData),
       (this.encryptedData = encryptedData),
@@ -15,12 +21,8 @@ class Stl {
     const db = getDb();
     let dbOp;
     dbOp = db.collection("STL").insertOne(this);
-    // console.log("Insert ", this.dataType);
     return dbOp
-      .then((result) =>
-        // console.log('result',result)
-        console.log("Record Inserted")
-      )
+      .then((result) => console.log("Record Inserted"))
       .catch((err) => console.log(err));
   }
 
@@ -44,7 +46,6 @@ class Stl {
       .find({ hashData: hashData })
       .next()
       .then((result) => {
-        // console.log("findbyhash result", result);
         return result;
       })
       .catch((err) => console.log(err));
@@ -57,7 +58,6 @@ class Stl {
       .find({ dataType: "hashSalt" })
       .next()
       .then((result) => {
-        // console.log("findhashsalt result", result);
         return result;
       })
       .catch((err) => console.log(err));
@@ -69,7 +69,6 @@ class Stl {
       .collection("STL")
       .deleteMany()
       .then((result) => {
-        // console.log(result);
         return result;
       })
       .catch((err) => console.log(err));

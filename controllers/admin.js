@@ -1,32 +1,31 @@
 const path = require("path");
-const fs = require("fs");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const stljs = require("stljs");
 
 const Stl = require("../models/STL");
 
-const filePath = path.dirname(require.main.filename);
+exports.getDbDeleted = (req, res, next) => {
+  Stl.deleteAll()
+    .then(() => {
+      console.log("All Deleted");
+      return res.end("Complete Database Deleted!");
+    })
+    .catch((err) => console.log(err));
+};
 
 exports.getUploadFile = (req, res, next) => {
   console.log("Started!");
-  // res.statusCode = 200;
-  res.sendFile(path.join(filePath, "views", "upload.html"));
-
-  // Stl.deleteAll()
-  //   .then((res) => console.log("All Deleted"))
-  //   .catch((err) => console.log(err));
-  // console.log("check");
+  res.sendFile(path.join(__dirname, "../", "views", "upload.html"));
 };
 
 exports.postUploadFile = (req, res, next) => {
-// console.log('testing', req.body.STLFile);
+  // console.log('testing', req.body.STLFile);
   let readFilePath = req.body.STLFile;
   let fileContent = "";
 
   stljs.readFile(readFilePath, (err, solid, name) => {
     fileContent = solid;
-
     // console.log("stlContent", fileContent);
 
     let hashSaltValue = "";
@@ -40,7 +39,6 @@ exports.postUploadFile = (req, res, next) => {
           hashSalt
             .save()
             .then((result) => {
-              // console.log(result);
               console.log("Salt generated and saved!");
             })
             .catch((err) => {
@@ -48,21 +46,18 @@ exports.postUploadFile = (req, res, next) => {
             });
         } else {
           hashSaltValue = result.hashData;
-          console.log("salt from db", hashSaltValue);
+          // console.log("salt from db", hashSaltValue);
         }
       })
       .then(() => {
         bcrypt
           .hash(fileContent.toString(), hashSaltValue)
           .then((hashData) => {
-            console.log("hashData", hashData);
+            // console.log("hashData", hashData);
 
             Stl.findByHash(hashData).then((result) => {
               if (result) {
-                const error = new Error('File already present in the database!');
-error.statusCode = 401;
-throw error;
-
+                // next("File already present in the database!");
                 return res.end("File already present in the database!");
               } else {
                 const algorithm = "aes-256-cbc";
@@ -91,23 +86,25 @@ throw error;
                 stl
                   .save()
                   .then((result) => {
-                    // console.log(result);
                     console.log("Uploaded!");
                     res.sendFile(
-                      path.join(filePath, "views", "postUpload.html")
+                      path.join(__dirname, "../", "views", "postUpload.html")
                     );
                   })
                   .catch((err) => {
+                    // next("Something went wrong!");
                     return res.end("Something went wrong!");
                   });
               }
             });
           })
           .catch((err) => {
+            // next("Something went wrong!");
             return res.end("Something went wrong!");
           });
       })
       .catch((err) => {
+        // next("Something went wrong!");
         return res.end("Something went wrong!");
       });
   });
